@@ -4,9 +4,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Environment variables
-.env
+# Environment variables - solo ignorar archivos locales con claves reales
+# El .env base (sin claves reales) se sube para que el hosting arranque
 .env.local
+.env.production
 
 # Storage folders (keep directory structure but ignore contents)
 storage/audios/*
