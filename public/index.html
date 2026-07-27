@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Video Creator — Studio Premium</title>
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+  <!-- Fondo con degradados dinámicos -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-glow bg-glow-3"></div>
+
+  <div class="app-container">
+    <!-- Navbar / Header -->
+    <header class="navbar glass-card">
+      <div class="logo-area">
+        <div class="logo-icon">🎬</div>
+        <div class="logo-text">
+          <h1>AI Video Creator</h1>
+          <span class="badge">PRO STUDIO</span>
+        </div>
+      </div>
+
+      <nav class="nav-tabs">
+        <button class="tab-btn active" data-tab="create-tab">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Crear Video
+        </button>
+        <button class="tab-btn" data-tab="gallery-tab">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"/></svg>
+          Galería
+        </button>
+        <button class="tab-btn" data-tab="settings-tab">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Ajustes API
+        </button>
+      </nav>
+
+      <div class="status-indicator" id="api-status-badge">
+        <span class="dot"></span>
+        <span class="status-text">Verificando APIs...</span>
+      </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="content-area">
+      
+      <!-- PESTAÑA 1: CREAR VIDEO -->
+      <section id="create-tab" class="tab-content active">
+        <div class="grid-2col">
+          
+          <!-- Formulario de Creación -->
+          <div class="glass-card panel-left">
+            <h2 class="panel-title">1. Sube tu Audio Original</h2>
+            <p class="panel-subtitle">Sube tu locución en .mp3 o .wav para sincronizar las imágenes y subtítulos automáticamente.</p>
+            
+            <!-- Drag & Drop Audio Upload -->
+            <div class="dropzone" id="audio-dropzone">
+              <input type="file" id="audio-file-input" accept=".mp3,.wav,.m4a,.ogg" hidden>
+              <div class="dropzone-content" id="dropzone-default">
+                <div class="dropzone-icon">🎙️</div>
+                <h3>Arrastra tu archivo de audio aquí</h3>
+                <p>o haz clic para seleccionar un archivo (.mp3, .wav)</p>
+              </div>
+              <div class="dropzone-content hidden" id="dropzone-selected">
+                <div class="dropzone-icon text-accent">🎵</div>
+                <h3 id="selected-audio-name">audio_ejemplo.mp3</h3>
+                <p id="selected-audio-size" class="text-sm">4.2 MB</p>
+                <button type="button" class="btn-text" id="change-audio-btn">Cambiar archivo</button>
+              </div>
+            </div>
+
+            <hr class="divider">
+
+            <h2 class="panel-title">2. Dirección Artística & IA</h2>
+            <p class="panel-subtitle">Selecciona cómo las IA construirán tu video.</p>
+
+            <form id="generate-form" class="settings-form">
+              <div class="form-group">
+                <label>Formato visual del video</label>
+                <div class="format-options">
+                  <label class="format-card active">
+                    <input type="radio" name="aspectRatio" value="9:16" checked>
+                    <div class="format-preview vertical"></div>
+                    <span>Vertical (9:16)</span>
+                    <small>Shorts, Reels, TikTok</small>
+                  </label>
+                  <label class="format-card">
+                    <input type="radio" name="aspectRatio" value="16:9">
+                    <div class="format-preview horizontal"></div>
+                    <span>Horizontal (16:9)</span>
+                    <small>YouTube Tradicional</small>
+                  </label>
+                </div>
+              </div>
+
+              <div class="grid-inputs">
+                <div class="form-group">
+                  <label for="llm-provider">Cerebro / Guionista (LLM)</label>
+                  <select id="llm-provider" name="llmProvider" class="input-select">
+                    <option value="gemini">Google Gemini 1.5 Pro</option>
+                    <option value="openai">OpenAI GPT-4o / Whisper</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="image-provider">Generador de Imágenes</label>
+                  <select id="image-provider" name="imageProvider" class="input-select">
+                    <option value="openai">OpenAI DALL-E 3</option>
+                    <option value="gemini">Google Imagen 3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="scene-duration">Duración aproximada por escena (segundos)</label>
+                <input type="number" id="scene-duration" name="sceneDuration" value="4" min="2" max="10" class="input-text">
+              </div>
+
+              <div class="form-group">
+                <label for="style-prompt">Prompt de Estilo Visual (Inglés o Español)</label>
+                <textarea id="style-prompt" name="stylePrompt" rows="3" class="input-textarea" placeholder="Ej. Cinematic cyberpunk aesthetic, neon dramatic lighting, highly detailed 8k render, professional color grading"></textarea>
+              </div>
+
+              <button type="submit" class="btn-primary btn-glow btn-lg" id="start-generate-btn">
+                <span class="btn-icon">⚡</span>
+                <span>Generar Video con IA</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Panel Derecho: Progreso y Logs en Tiempo Real -->
+          <div class="glass-card panel-right flex-col">
+            <div class="panel-header-row">
+              <h2 class="panel-title">Estado de Producción</h2>
+              <span class="badge badge-secondary" id="job-status-badge">Esperando inicio</span>
+            </div>
+            <p class="panel-subtitle">Aquí verás el progreso de la inteligencia artificial en tiempo real.</p>
+
+            <div class="progress-box hidden" id="progress-container">
+              <div class="progress-header">
+                <span id="progress-step-text">Iniciando motor de IA...</span>
+                <span id="progress-percent-text" class="text-accent font-bold">0%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Terminal de Logs -->
+            <div class="terminal-box" id="terminal-logs">
+              <div class="terminal-line"><span class="text-muted">[Sistema]</span> Listo para recibir audio y generar video...</div>
+            </div>
+
+            <!-- Preview del Video Terminado -->
+            <div class="preview-box hidden" id="video-preview-box">
+              <h3>🎉 ¡Tu video ha sido renderizado!</h3>
+              <video id="result-video-player" controls class="video-player"></video>
+              <div class="preview-actions">
+                <a href="#" id="download-video-btn" download class="btn-primary">⬇️ Descargar MP4</a>
+                <button type="button" id="new-video-btn" class="btn-secondary">🔄 Crear Otro Video</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PESTAÑA 2: GALERÍA -->
+      <section id="gallery-tab" class="tab-content">
+        <div class="glass-card">
+          <div class="panel-header-row">
+            <div>
+              <h2 class="panel-title">🎞️ Galería de Producción</h2>
+              <p class="panel-subtitle">Todos los videos renderizados por la Inteligencia Artificial.</p>
+            </div>
+            <button class="btn-secondary btn-sm" id="refresh-gallery-btn">🔄 Actualizar</button>
+          </div>
+          
+          <div class="video-grid" id="gallery-grid">
+            <div class="loading-spinner">Cargando videos...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PESTAÑA 3: AJUSTES API -->
+      <section id="settings-tab" class="tab-content">
+        <div class="glass-card max-w-lg mx-auto">
+          <h2 class="panel-title">⚙️ Configuración de Claves API</h2>
+          <p class="panel-subtitle">Introduce tus claves para conectar la web con los servidores de Inteligencia Artificial.</p>
+          
+          <form id="api-settings-form" class="settings-form mt-6">
+            <div class="form-group">
+              <label for="openai-key">OpenAI API Key (ChatGPT / Whisper / DALL-E 3)</label>
+              <div class="input-with-icon">
+                <span class="input-icon">🔑</span>
+                <input type="password" id="openai-key" name="openaiApiKey" class="input-text" placeholder="sk-proj-..." autocomplete="off">
+              </div>
+              <small class="help-text">Necesario para transcribir con Whisper y generar imágenes con DALL-E 3.</small>
+            </div>
+
+            <div class="form-group mt-4">
+              <label for="gemini-key">Google Gemini API Key</label>
+              <div class="input-with-icon">
+                <span class="input-icon">🌟</span>
+                <input type="password" id="gemini-key" name="geminiApiKey" class="input-text" placeholder="AIzaSy..." autocomplete="off">
+              </div>
+              <small class="help-text">Necesario para generar la dirección artística de escenas o usar Imagen 3.</small>
+            </div>
+
+            <div class="alert-info mt-6">
+              <span class="icon">ℹ️</span>
+              <p>Las claves API se almacenan de forma local y segura en el servidor de tu aplicación.</p>
+            </div>
+
+            <button type="submit" class="btn-primary w-full mt-4">
+              <span>Guardar Configuración</span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
