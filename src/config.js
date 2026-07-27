@@ -5,7 +5,7 @@ const fs = require('fs');
 dotenv.config();
 
 const config = {
-  port: process.env.PORT || 3000,
+  port: process.env.PORT || 5000,
   openaiApiKey: process.env.OPENAI_API_KEY || '',
   geminiApiKey: process.env.GEMINI_API_KEY || '',
   storagePaths: {

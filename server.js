@@ -31,12 +31,26 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Iniciar servidor
-const PORT = config.port;
-app.listen(PORT, () => {
-  console.log('====================================================');
-  console.log(`🎬 Creador de Videos con IA listo y en ejecución!`);
-  console.log(`🌐 Dashboard Web disponible en: http://localhost:${PORT}`);
-  console.log(`🤖 APIs IA soportadas: Google Gemini & OpenAI GPT-4o/DALL-E`);
-  console.log('====================================================');
-});
+// Iniciar servidor con búsqueda automática de puerto libre
+const startServer = (port) => {
+  const server = app.listen(port, () => {
+    config.port = port;
+    console.log('====================================================');
+    console.log(`🎬 Creador de Videos con IA listo y en ejecución!`);
+    console.log(`🌐 Dashboard Web disponible en: http://localhost:${port}`);
+    console.log(`🤖 APIs IA soportadas: Google Gemini & OpenAI GPT-4o/DALL-E`);
+    console.log('====================================================');
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.warn(`⚠️ El puerto ${port} ya está ocupado. Intentando automáticamente en el puerto ${port + 1}...`);
+      startServer(port + 1);
+    } else {
+      console.error('[Server Error]:', err.message);
+    }
+  });
+};
+
+const initialPort = parseInt(config.port, 10) || 5000;
+startServer(initialPort);
