@@ -31,9 +31,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Iniciar servidor con búsqueda automática de puerto libre
+// Iniciar servidor con búsqueda automática de puerto libre y vinculación a 0.0.0.0 para compatibilidad en hosting nube
 const startServer = (port) => {
-  const server = app.listen(port, () => {
+  const server = app.listen(port, '0.0.0.0', () => {
     config.port = port;
     console.log('====================================================');
     console.log(`🎬 Creador de Videos con IA listo y en ejecución!`);

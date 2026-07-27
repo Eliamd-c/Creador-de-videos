@@ -5,8 +5,12 @@ const config = require('../config');
 class StorageService {
   static init() {
     Object.values(config.storagePaths).forEach(dirPath => {
-      if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
+      try {
+        if (!fs.existsSync(dirPath)) {
+          fs.mkdirSync(dirPath, { recursive: true });
+        }
+      } catch (err) {
+        console.warn(`[Storage Warning] No se pudo crear el directorio ${dirPath} en este entorno:`, err.message);
       }
     });
   }

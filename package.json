@@ -20,6 +20,9 @@
     "url": "https://github.com/Eliamd-c/Creador-de-videos/issues"
   },
   "homepage": "https://github.com/Eliamd-c/Creador-de-videos#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "cors": "^2.8.6",
