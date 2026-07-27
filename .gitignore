@@ -1,0 +1,25 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+
+# Storage folders (keep directory structure but ignore contents)
+storage/audios/*
+!storage/audios/.gitkeep
+storage/images/*
+!storage/images/.gitkeep
+storage/subtitles/*
+!storage/subtitles/.gitkeep
+storage/videos/*
+!storage/videos/.gitkeep
+storage/temp/*
+!storage/temp/.gitkeep
+
+# OS generated files
+.DS_Store
+Thumbs.db
