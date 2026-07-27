@@ -1,13 +1,26 @@
 const fs = require('fs');
 const path = require('path');
 const ffmpeg = require('fluent-ffmpeg');
-const ffmpegPath = require('ffmpeg-static');
-const ffprobePath = require('ffprobe-static').path;
 const config = require('../config');
 
-// Configurar rutas estáticas de FFmpeg para máxima portabilidad en cualquier hosting Node.js
-ffmpeg.setFfmpegPath(ffmpegPath);
-ffmpeg.setFfprobePath(ffprobePath);
+// Inicialización diferida de FFmpeg — se hace una sola vez al usar el servicio por primera vez
+// Esto previene crashes en servidores cloud donde los binarios pueden no estar listos al cargar el módulo
+let ffmpegInitialized = false;
+
+function initFFmpeg() {
+  if (ffmpegInitialized) return;
+  try {
+    const ffmpegPath = require('ffmpeg-static');
+    const ffprobePath = require('ffprobe-static').path;
+    if (ffmpegPath) ffmpeg.setFfmpegPath(ffmpegPath);
+    if (ffprobePath) ffmpeg.setFfprobePath(ffprobePath);
+    ffmpegInitialized = true;
+    console.log('[Video Service] FFmpeg inicializado correctamente.');
+  } catch (err) {
+    console.error('[Video Service] Advertencia: No se pudo configurar FFmpeg:', err.message);
+    ffmpegInitialized = true; // marcar como intentado para no reintentar en bucle
+  }
+}
 
 class VideoService {
   /**
@@ -15,6 +28,7 @@ class VideoService {
    */
   static getAudioDuration(audioPath) {
     return new Promise((resolve, reject) => {
+      initFFmpeg();
       ffmpeg.ffprobe(audioPath, (err, metadata) => {
         if (err) return reject(new Error(`Error al analizar audio con ffprobe: ${err.message}`));
         const duration = metadata.format.duration;
@@ -98,6 +112,7 @@ class VideoService {
     onProgress = () => {}
   }) {
     return new Promise((resolve, reject) => {
+      initFFmpeg();
       const tempDir = config.storagePaths.temp;
       const concatFilePath = path.join(tempDir, `concat_${Date.now()}.txt`);
       
